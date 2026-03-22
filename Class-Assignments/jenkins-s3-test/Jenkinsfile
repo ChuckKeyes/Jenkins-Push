@@ -10,7 +10,7 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'larry-aws'
+                    credentialsId: 'larry'
                 ]]) {
                     sh 'aws sts get-caller-identity'
                 }
@@ -28,7 +28,7 @@ pipeline {
                 dir('Class-Assignments/jenkins-s3-test') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry-aws'
+                        credentialsId: 'larry'
                     ]]) {
                         sh 'terraform init'
                     }
@@ -41,7 +41,7 @@ pipeline {
                 dir('Class-Assignments/jenkins-s3-test') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry-aws'
+                        credentialsId: 'larry'
                     ]]) {
                         sh 'terraform plan -out=tfplan'
                     }
@@ -55,7 +55,7 @@ pipeline {
                 dir('Class-Assignments/jenkins-s3-test') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry-aws'
+                        credentialsId: 'larry'
                     ]]) {
                         sh 'terraform apply -auto-approve tfplan'
                     }
