@@ -1,0 +1,10 @@
+resource "aws_security_group_rule" "tokyo_rds_from_saopaulo" {
+  provider          = aws
+  type              = "ingress"
+  security_group_id = module.tokyo_core.rds_sg_id
+
+  from_port   = 5432
+  to_port     = 5432
+  protocol    = "tcp"
+  cidr_blocks = ["10.20.10.0/24", "10.20.11.0/24"]
+}

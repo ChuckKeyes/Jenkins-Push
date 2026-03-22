@@ -1,0 +1,11 @@
+variable "project_id"           { type = string }
+variable "region"               { type = string }
+variable "network_id"           { type = string }
+variable "router_name"          { type = string }
+variable "ha_vpn_gateway_name"  { type = string }
+variable "aws_external_gw_name" { type = string }
+variable "aws_peer_ip_1"        { type = string }
+variable "aws_peer_ip_2"        { type = string }
+variable "aws_peer_ip_3"        { type = string }
+variable "aws_peer_ip_4"        { type = string }
+variable "router_asn"           { type = number }

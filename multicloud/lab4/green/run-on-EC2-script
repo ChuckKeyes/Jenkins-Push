@@ -1,0 +1,33 @@
+#!/usr/bin/envset -euo pipefail
+
+BUCKET="lab3-vpc-staff-photos-557690581423"
+WEB_ROOT="/usr/share/nginx/html"
+TEST_IMAGE_PATH="/img/images1.jpeg"
+
+die() { echo "ERROR: $*" >&2; exit 1; }
+require_cmd() { command -v "$1" >/dev/null 2>&1 || die "Missing command: $1"; }
+
+require_cmd aws
+require_cmd nginx
+require_cmd systemctl
+require_cmd curl
+
+sudo aws s3 sync "s3://$BUCKET/" "$WEB_ROOT/" --delete
+sudo chown -R root:root "$WEB_ROOT"
+sudo find "$WEB_ROOT" -type d -exec chmod 755 {} \;
+sudo find "$WEB_ROOT" -type f -exec chmod 644 {} \;
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+curl -I "http://localhost/" | head -20
+curl -I "http://localhost$TEST_IMAGE_PATH" | head -20 || true
+
+echo "Done." bash
+
+########################################################
+
+# RUN ON EC2
+
+chmod +x pull_site_from_s3_to_nginx.sh
+./pull_site_from_s3_to_nginx.sh

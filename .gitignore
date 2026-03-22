@@ -1,0 +1,186 @@
+<<<<<<< HEAD
+############################
+# Obsidian vault hygiene
+############################
+.obsidian/workspace.json
+.obsidian/appearance.json
+.obsidian/app.json
+.obsidian/plugins/*/data.json
+
+############################
+# Terraform
+############################
+**/.terraform/**
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+**/*.tfvars.json
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+**/*.tfplan
+**/crash.log*
+!**/.terraform.lock.hcl
+
+############################
+# Big media / books (keep out of repo)
+############################
+Books/**
+**/Books/**
+GCP/GCP-Books/**
+GCP/PDF/**
+AWS/AWS_Books/**
+Videos/**
+**/*.mp4
+**/*.mov
+**/*.mkv
+**/*.iso
+**/*.zip
+
+############################
+# OS noise
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Windows / binaries
+############################
+**/*.exe
+**/terraform-provider-*
+
+##################################
+# Obsidian plugins (recommended: ignore all plugin folders)
+.obsidian/plugins/**
+# Keep plugin settings files if you want
+!.obsidian/plugins/**/data.json
+###################################
+
+.trash/*
+GCP/Python/.venv/*
+Photos/Violin_files/*
+Terraform-Code/Obsidian/*
+=======
+################################################################
+# BIG PROJECT FOLDERS WE WILL TRACK IN SEPARATE REPOS LATER
+################################################################
+Terraform-Code/
+Python/
+resources/
+locales/
+CharlesJr/
+Kids/
+
+
+################################################################
+# 1. IGNORE MASSIVE BOOK FOLDERS (183 GB)
+################################################################
+Books/
+Books/**
+AWS/AWS_Books/
+AWS/AWS_Books/**
+GCP/GCP-Books/
+GCP/GCP-Books/**
+GCP/PDF/
+GCP/PDF/**
+Videos/
+Videos/**
+
+################################################################
+# 2. IGNORE ANY .git FOLDERS NESTED INSIDE SUBDIRECTORIES
+################################################################
+**/.git/
+**/.github/
+
+################################################################
+# 3. IGNORE SENSITIVE FILES (.pem, .key, tfvars, etc.)
+################################################################
+*.pem
+*.key
+*.p12
+*.tfvars
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+################################################################
+# 4. IGNORE TERRAFORM JUNK EVERYWHERE
+################################################################
+**/.terraform/
+**/.terraform/**
+
+# State files (never commit)
+**/terraform.tfstate
+**/terraform.tfstate.*
+**/*.tfstate
+**/*.tfstate.backup
+
+# Plan & crash logs
+**/*.tfplan
+**/crash.log*
+**/crash.*.log
+
+# Local override files
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+
+################################################################
+# 5. KEEP THE TERRAFORM LOCK FILE (IMPORTANT)
+################################################################
+!**/.terraform.lock.hcl
+
+################################################################
+# 6. OBSIDIAN FILE HYGIENE
+################################################################
+# Ignore workspace states
+.obsidian/workspace.json
+.obsidian/appearance.json
+.obsidian/app.json
+
+# Plugin data (cache-like)
+.obsidian/plugins/*/data.json
+
+################################################################
+# 7. OS JUNK FILES
+################################################################
+.DS_Store
+Thumbs.db
+
+################################################################
+# 8. OPTIONAL: Ignore Portfolio Files (your note)
+################################################################
+Portfolio Files/
+
+################################################################
+# 9. EXECUTABLES & PROVIDERS
+################################################################
+**/terraform-provider-*
+**/*.exe
+
+################################################################
+# PYTHON VIRTUAL ENVIRONMENTS TO IGNORE
+################################################################
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+
+################################################################
+# DRAW.IO AUTOSAVE, BACKUPS, TEMP FILES
+################################################################
+**/.*.bkp
+**/.*.bak
+**/.*.tmp
+**/.$*.*
+**/*.drawio.bkp
+**/*.drawio.autosave
+
+################################################################
+# IGNORE EVERYTHING IN Terraform-Code/class6.5/GCP/Python
+################################################################
+Terraform-Code/class6.5/GCP/Python/
+
+# (OPTIONAL: you can ignore entire Terraform-Code folder if you want)
+# Terraform-Code/
+>>>>>>> 9911d879902207ad42e898bb4513e878248f5488
