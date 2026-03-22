@@ -1,0 +1,39 @@
+pipeline {
+  agent any
+
+  environment {
+    TF_IN_AUTOMATION = "true"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Terraform Init') {
+      steps {
+        dir('multicloud/lab4') {
+          sh 'terraform init'
+        }
+      }
+    }
+
+    stage('Terraform Validate') {
+      steps {
+        dir('multicloud/lab4') {
+          sh 'terraform validate'
+        }
+      }
+    }
+
+    stage('Terraform Plan') {
+      steps {
+        dir('multicloud/lab4') {
+          sh 'terraform plan'
+        }
+      }
+    }
+  }
+}
