@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "frontend" {
-  bucket_prefix  = "jenkins-bucket-"
-  force_destroy  = true
+  bucket        = "jenkins-bucket-20260322204450920400000001"
+  force_destroy = true
 
   tags = {
     Name = "Jenkins Bucket"
@@ -34,3 +34,4 @@ resource "aws_s3_bucket_policy" "frontend_public" {
 
   depends_on = [aws_s3_bucket_public_access_block.frontend]
 }
+
