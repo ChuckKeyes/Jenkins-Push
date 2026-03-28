@@ -3,15 +3,30 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        S3_BUCKET  = 'jenkins-bucket-20260322204450920400000001'
     }
+
+
+    stage('Check Tools') {
+    steps {
+        sh '''
+        which git || true
+        git --version || true
+        which aws || true
+        aws --version || true
+        which python3 || true
+        python3 --version || true
+        which terraform || true
+        terraform version || true
+        '''
+    }
+}
 
     stages {
         stage('Set AWS Credentials') {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'larry'
+                    credentialsId: 'Larry'
                 ]]) {
                     sh 'aws sts get-caller-identity'
                 }
@@ -29,7 +44,7 @@ pipeline {
                 dir('Class-Assignments/jenkins-s3-test') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry'
+                        credentialsId: 'Larry'
                     ]]) {
                         sh 'terraform init'
                     }
@@ -42,7 +57,7 @@ pipeline {
                 dir('Class-Assignments/jenkins-s3-test') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry'
+                        credentialsId: 'Larry'
                     ]]) {
                         sh 'terraform plan -out=tfplan'
                     }
@@ -56,36 +71,9 @@ pipeline {
                 dir('Class-Assignments/jenkins-s3-test') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry'
+                        credentialsId: 'Larry'
                     ]]) {
                         sh 'terraform apply -auto-approve tfplan'
-                    }
-                }
-            }
-        }
-
-        // ✅ NEW STAGE ADDED HERE
-        stage('Upload Photos and README to S3') {
-            steps {
-                dir('Class-Assignments/jenkins-s3-test') {
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'larry'
-                    ]]) {
-                        sh '''
-                        set -eux
-
-                        echo "=== Files in directory ==="
-                        ls -lah
-
-                        aws s3 cp photo1.jpg s3://$S3_BUCKET/uploads/photo1.jpg --region $AWS_REGION
-                        aws s3 cp photo2.jpg s3://$S3_BUCKET/uploads/photo2.jpg --region $AWS_REGION
-                        aws s3 cp photo3.jpg s3://$S3_BUCKET/uploads/photo3.jpg --region $AWS_REGION
-                        aws s3 cp README.md  s3://$S3_BUCKET/uploads/README.md.md  --region $AWS_REGION
-
-                        echo "=== Uploaded Files ==="
-                        aws s3 ls s3://$S3_BUCKET/uploads/ --region $AWS_REGION
-                        '''
                     }
                 }
             }
