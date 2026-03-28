@@ -81,7 +81,7 @@ pipeline {
                         aws s3 cp photo1.jpg s3://$S3_BUCKET/uploads/photo1.jpg --region $AWS_REGION
                         aws s3 cp photo2.jpg s3://$S3_BUCKET/uploads/photo2.jpg --region $AWS_REGION
                         aws s3 cp photo3.jpg s3://$S3_BUCKET/uploads/photo3.jpg --region $AWS_REGION
-                        aws s3 cp README.md  s3://$S3_BUCKET/uploads/README.md.md  --region $AWS_REGION
+                        // aws s3 cp README.md  s3://$S3_BUCKET/uploads/README.md.md  --region $AWS_REGION
 
                         echo "=== Uploaded Files ==="
                         aws s3 ls s3://$S3_BUCKET/uploads/ --region $AWS_REGION
