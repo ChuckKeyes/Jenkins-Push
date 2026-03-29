@@ -4,6 +4,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         TF_IN_AUTOMATION   = 'true'
+        TF_DIR             = 'Class-Assignments/new-jenkins-s3-test'
     }
 
     stages {
@@ -15,25 +16,33 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'larry'
-                ]]) {
-                    sh 'terraform init'
+                dir("${TF_DIR}") {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'larry'
+                    ]]) {
+                        sh '''
+                            pwd
+                            ls -la
+                            terraform init
+                        '''
+                    }
                 }
             }
         }
 
-        stage('Terraform Apply') {
+        stage('Terraform Plan and Apply') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'larry'
-                ]]) {
-                    sh '''
-                        terraform plan -out=tfplan
-                        terraform apply -auto-approve tfplan
-                    '''
+                dir("${TF_DIR}") {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'larry'
+                    ]]) {
+                        sh '''
+                            terraform plan -out=tfplan
+                            terraform apply -auto-approve tfplan
+                        '''
+                    }
                 }
             }
         }
@@ -54,14 +63,16 @@ pipeline {
                     )
 
                     if (destroyChoice == 'yes') {
-                        withCredentials([[
-                            $class: 'AmazonWebServicesCredentialsBinding',
-                            credentialsId: 'larry'
-                        ]]) {
-                            sh 'terraform destroy -auto-approve'
+                        dir("${TF_DIR}") {
+                            withCredentials([[
+                                $class: 'AmazonWebServicesCredentialsBinding',
+                                credentialsId: 'larry'
+                            ]]) {
+                                sh 'terraform destroy -auto-approve'
+                            }
                         }
                     } else {
-                        echo "Skipping destroy"
+                        echo 'Skipping destroy'
                     }
                 }
             }
