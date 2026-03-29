@@ -1601,3 +1601,4 @@ screenshots/terraform/project-structure.png
 
 This screenshot illustrates the modular design used to organize Terraform infrastructure components.
 ---
+aws s3 cp README.md2 s3://$BUCKET_NAME/uploads/README.md --region us-east-1
