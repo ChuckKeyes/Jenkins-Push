@@ -4,13 +4,28 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         TF_IN_AUTOMATION   = 'true'
-        TF_DIR             = 'Class-Assignments/new-jenkins-s3-test'
+        TF_DIR             = '.'
     }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh '''
+                    pwd
+                    ls -la
+                '''
+            }
+        }
+
+        stage('Verify Environment') {
+            steps {
+                sh '''
+                    set -e
+                    whoami
+                    terraform version
+                    aws --version
+                '''
             }
         }
 
@@ -22,8 +37,7 @@ pipeline {
                         credentialsId: 'larry'
                     ]]) {
                         sh '''
-                            pwd
-                            ls -la
+                            set -e
                             terraform init
                         '''
                     }
@@ -31,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Plan and Apply') {
+        stage('Terraform Plan') {
             steps {
                 dir("${TF_DIR}") {
                     withCredentials([[
@@ -39,7 +53,23 @@ pipeline {
                         credentialsId: 'larry'
                     ]]) {
                         sh '''
+                            set -e
                             terraform plan -out=tfplan
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir("${TF_DIR}") {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'larry'
+                    ]]) {
+                        sh '''
+                            set -e
                             terraform apply -auto-approve tfplan
                         '''
                     }
@@ -68,7 +98,10 @@ pipeline {
                                 $class: 'AmazonWebServicesCredentialsBinding',
                                 credentialsId: 'larry'
                             ]]) {
-                                sh 'terraform destroy -auto-approve'
+                                sh '''
+                                    set -e
+                                    terraform destroy -auto-approve
+                                '''
                             }
                         }
                     } else {
